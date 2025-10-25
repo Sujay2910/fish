@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swimming Fish Animation</title>
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(to bottom, #0077b6, #001d3d);
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* --- Common creature style --- */
+  .fish, .turtle {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: contain;
+    will-change: transform;
+  }
+
+  /* 🐠 Fish setup */
+  .fish {
+    width: 100px;
+    height: 60px;
+    bottom: 150px;
+    background-image: url('fish1.png');   /* Make sure this image exists */
+    animation: swimFish 15s linear infinite;
+  }
+
+  /* 🐢 Turtle setup */
+  .turtle {
+    width: 140px;
+    height: 90px;
+    bottom: 300px;
+    background-image: url('turtle.png');  /* Make sure this image exists */
+    animation: swimTurtle 25s linear infinite;
+  }
+
+  /* --- Animations --- */
+  @keyframes swimFish {
+    0%   { left: -150px; transform: scaleX(1); }
+    50%  { left: 100vw; transform: scaleX(1); }
+    51%  { transform: scaleX(-1); }
+    100% { left: -150px; transform: scaleX(-1); }
+  }
+
+  @keyframes swimTurtle {
+    0%   { left: 100vw; transform: scaleX(-1); }
+    50%  { left: -150px; transform: scaleX(-1); }
+    51%  { transform: scaleX(1); }
+    100% { left: 100vw; transform: scaleX(1); }
+  }
+</style>
+</head>
+<body>
+  <div class="fish"></div>
+  <div class="turtle"></div>
+</body>
+</html>

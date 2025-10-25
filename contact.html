@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact - Marine Life</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #011627;
+      --bg-light: #022f3b;
+      --accent: #00d4ff;
+      --accent-hover: #5bebff;
+      --muted: rgba(255, 255, 255, 0.7);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    /* ===== Global Styles ===== */
+    body {
+      margin: 0;
+      color: white;
+      line-height: 1.5;
+
+      /* Background Image Setup */
+      background-image: url('BG1.webp'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-color: var(--bg); 
+    }
+
+    /* ===== Navbar ===== */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 15px 40px;
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-brand {
+      color: #00cfff;
+      font-size: 1.6em;
+      font-weight: bold;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    .nav-brand i {
+      margin-right: 8px;
+      color: #00e0ff;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #f1f1f1;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #00e0ff;
+      transform: scale(1.1);
+    }
+
+    .nav-links i {
+      margin-right: 6px;
+    }
+
+    /* ===== Container ===== */
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 32px;
+
+      /* === INCREASED TRANSPARENCY (OPACITY 0.55) === */
+      background: rgba(1, 22, 39, 0.55); 
+      backdrop-filter: blur(5px);
+      border-radius: 14px;
+      margin-top: 32px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      
+      /* Load Animation */
+      animation: fadeIn 1s ease-out 0.2s backwards;
+    }
+
+    .container h1 {
+      color: #00e0ff;
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      text-shadow: 0 0 15px rgba(0, 224, 255, 0.7);
+    }
+
+    .container p {
+      font-size: 1.1em;
+      color: #e0f7fa;
+      margin-bottom: 25px;
+    }
+
+    /* ===== Form Styles ===== */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      text-align: left;
+    }
+
+    label {
+      font-weight: 600;
+      color: #aefcff;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 1em;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 8px #00e0ff;
+    }
+
+    .btn {
+      background: linear-gradient(to right, #00e0ff, #00b4d8);
+      color: #003366;
+      padding: 12px;
+      font-size: 1.1em;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: linear-gradient(to right, #00b4d8, #00e0ff);
+      transform: scale(1.05);
+    }
+    .footer {
+        background: rgba(1, 22, 39, 0.9); /* Dark background with high opacity */
+        border-top: 1px solid var(--card-bg);
+        padding: 40px 0 20px 0;
+        margin-top: 40px;
+        color: var(--muted);
+    }
+    
+    .footer-content {
+        max-width: 1100px;
+        margin: auto;
+        padding: 0 32px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 30px;
+    }
+    
+    .footer-section {
+        flex: 1;
+        min-width: 180px;
+    }
+    
+    .footer-section h4 {
+        color: white;
+        font-size: 1.1rem;
+        margin-top: 0;
+        margin-bottom: 15px;
+        border-bottom: 2px solid var(--accent);
+        display: inline-block;
+        padding-bottom: 5px;
+    }
+    
+    .footer-section p {
+        font-size: 0.9rem;
+        margin: 0 0 10px 0;
+    }
+
+    .footer-section a {
+        color: var(--muted);
+        text-decoration: none;
+        display: block;
+        margin-bottom: 8px;
+        transition: color 0.2s ease;
+    }
+    
+    .footer-section a:hover {
+        color: var(--accent);
+    }
+
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .social-links a {
+        display: block;
+        font-size: 1.4rem;
+        color: white;
+        transition: color 0.2s ease, transform 0.2s ease;
+        /* Remove inherited 'display: block' from footer-section a */
+        margin-bottom: 0; 
+    }
+
+    .social-links a:hover {
+        color: var(--accent-hover);
+        transform: scale(1.1);
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.85rem;
+    }
+    
+    @media (max-width: 768px) {
+        .footer-content {
+            justify-content: center;
+            text-align: center;
+        }
+        .footer-section h4 {
+            border-bottom: none;
+        }
+        .social-links {
+            justify-content: center;
+        }
+    }
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+      }
+      .nav-links {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .container {
+        margin: 50px 20px;
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <a href="abc.html" class="nav-brand"><i class="fa-solid fa-water"></i> Marine Life</a>
+    <ul class="nav-links">
+      <li><a href="abc.html"><i class="fa-solid fa-image"></i> <span>Gallery</span></a></li>
+      <li><a href="about.html"><i class="fa-solid fa-circle-info"></i> <span>About</span></a></li>
+      <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> <span>Contact</span></a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p>We’d love to hear from you! Fill out the form below:</p>
+
+    <form id="contactForm">
+  <!-- Web3Forms API key -->
+  <input type="hidden" name="access_key" value="62cb2db5-436e-45e0-99f6-2466653de301">
+  <!-- Redirect after successful submission (optional) -->
+  <input type="hidden" name="redirect" value="thankyou.html">
+
+  <label><b>Name</b></label>
+  <input type="text" name="name" required>
+
+  <label><b>Email</b></label>
+  <input type="email" name="email" required>
+
+  <label><b>Message</b></label>
+  <textarea name="message" rows="4" required></textarea>
+
+  <button class="btn" type="submit">Send Message</button>
+</form>
+
+    </div>
+     <footer class="footer">
+    <div class="footer-content">
+        
+        <div class="footer-section">
+            <h4>About Us</h4>
+            <p>Dedicated to exploring and cataloging the amazing diversity of life found beneath the ocean waves.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <a href="#">Species Index</a>
+            <a href="#">Habitat Maps</a>
+            <a href="#">Conservation Efforts</a>
+            <a href="#">Submit a Photo</a>
+        </div>
+
+        <div class="footer-section">
+            <h4>Support</h4>
+            <a href="#">FAQ</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Donations</a>
+        </div>
+        
+    </div>
+    <div class="footer-bottom">
+        &copy; <span id="current-year"></span> Marine life. All rights reserved.
+    </div>
+  </footer>
+  <script>
+  // Web3Forms Submission
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: data
+    });
+    const result = await response.json();
+    if(result.success){
+      alert('Message sent successfully!');
+      form.reset();
+      if(data.get('redirect')) window.location.href = data.get('redirect');
+    } else {
+      alert('Error sending message. Please try again.');
+    }
+  });
+</script>
+</body>
+</html>

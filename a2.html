@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MarineLife</title>
+  <style>
+    :root {
+      --bg: #011627;
+      --bg-light: #022f3b;
+      --accent: #00d4ff;
+      --accent-hover: #5bebff;
+      --muted: rgba(255, 255, 255, 0.7);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-light);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    body {
+  margin: 0;
+  color: white;
+  line-height: 1.5;
+
+  /* === Add these properties === */
+  /* Replace with your image URL. I've used a placeholder. */
+  background-image: url('BG1.webp'); 
+  background-size: cover; /* Stretches the image to cover the entire screen */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from tiling */
+  background-attachment: fixed; /* Fixes the image; it won't scroll with the content */
+  
+  /* This dark color will show if the image fails to load */
+   background-color: var(--bg); 
+}
+
+   .container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 32px;
+
+  /* === Add these lines for a professional look === */
+  background: rgba(1, 22, 39, 0.85); /* This is var(--bg) with 85% opacity */
+  backdrop-filter: blur(5px); /* Adds a modern frosted-glass effect */
+  border-radius: 14px; /* Softens the container edges */
+  margin-top: 32px; /* Adds some space from the top */
+  margin-bottom: 32px; /* Adds some space from the bottom */
+  box-shadow: var(--shadow); /* Give the container a subtle lift */
+}
+
+    h1 {
+      font-size: 2.5rem;
+      /* Subtle gradient text */
+      background: linear-gradient(45deg, var(--accent), #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0;
+    }
+
+    h3 {
+      margin-top: 40px;
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--card-bg);
+      padding-bottom: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      text-align: left;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+    }
+
+    .species-img {
+      height: 130px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    
+    .habitat-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .card-content {
+      padding: 16px;
+    }
+    
+    .card-content h4 {
+      margin: 0 0 8px;
+    }
+
+    .card-content p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 0 12px;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+      border: none;
+      padding: 9px 14px;
+      border-radius: 8px;
+      margin-top: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: scale(1.03);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 24px;
+  /* === Change this line === */
+  background: rgba(2, 47, 59, 0.95); /* This is var(--bg-light) with 95% opacity */
+  
+  border-radius: 14px;
+  padding: 24px;
+  max-width: 900px;
+  width: 100%;
+  align-items: flex-start;
+  position: relative;
+  box-shadow: var(--shadow);
+  transform: scale(0.95);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+    .modal.open .modal-card {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .modal-card img {
+      flex-basis: 400px;
+      flex-shrink: 0;
+      width: 45%;
+      border-radius: 10px;
+      object-fit: cover;
+      height: 350px;
+    }
+
+    .modal-text {
+      flex: 1;
+      min-width: 0; /* Prevents flex overflow */
+    }
+
+    .modal-text h2 {
+      margin: 0 0 16px;
+      font-size: 2rem;
+      color: var(--accent);
+    }
+    
+    /* New modal description styling */
+    .detail-item {
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+    .detail-item strong {
+      display: block;
+      color: white;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .detail-item span {
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 2.5rem;
+      font-weight: 300;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      transition: color 0.2s ease;
+    }
+    .modal-close:hover {
+      color: white;
+    }
+    
+    /* Responsive adjustment for modal */
+    @media (max-width: 768px) {
+      .modal-card {
+        flex-direction: column;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-card img {
+        width: 100%;
+        height: 250px;
+        flex-basis: 250px;
+      }
+      .modal-text h2 {
+        font-size: 1.7rem;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Marine Life</h1>
+    </header>
+    
+    <main>
+      <h3>Species Gallery</h3>
+      <div class="grid" id="galleryGrid"></div>
+    </main>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <button class="modal-close" id="closeModal" aria-label="Close modal">&times;</button>
+      <img id="modalImg" src="" alt="">
+      <div class="modal-text">
+        <h2 id="modalTitle"></h2>
+        <div id="modalDesc"></div>
+        <button class="btn" id="closeModalBtn" style="margin-top: 16px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const species=[
+      {id:1,name:'Clownfish',habitat:'Coral Reef',img:'clownfish.avif',shortDesc:'Colorful reef fish that lives with sea anemones.',desc:`Scientific Name: Amphiprioninae\nHabitat: Coral reefs in the Pacific and Indian Oceans.\nAverage Size: 4–5 inches.\nDiet: Small invertebrates, algae.\nFun Fact: All clownfish are born male; dominant one changes into a female!`},
+      {id:2,name:'Blue Tang',habitat:'Coral Reef',img:'blue-fish.jpg',shortDesc:'Bright blue reef fish known from Finding Nemo.',desc:`Scientific Name: Paracanthurus hepatus\nHabitat: Indo-Pacific coral reefs.\nAverage Size: 12 inches.\nDiet: Algae and plankton.\nFun Fact: Changes color from blue to purple when stressed.`},
+      {id:3,name:'Giant Octopus',habitat:'Seafloor',img:'octopus+2.webp',shortDesc:'Intelligent cephalopod with three hearts.',desc:`Scientific Name: Enteroctopus dofleini\nHabitat: Cold ocean floors.\nAverage Size: Up to 16 feet arm span.\nDiet: Crabs, lobsters, fish.\nFun Fact: Has blue blood!`},
+      {id:4,name:'Sea Turtle',habitat:'Open Ocean',img:'turtle1.webp',shortDesc:'Marine reptile that migrates long distances.',desc:`Scientific Name: Chelonioidea\nHabitat: Tropical and subtropical seas.\nAverage Lifespan: 80 years.\nDiet: Seagrass and jellyfish.\nFun Fact: Females return to same beach where they hatched.`},
+      {id:5,name:'Hammerhead Shark',habitat:'Open Ocean',img:'hammerhead-shark-swimming_3x2.avif',shortDesc:'Predator with unique head shape.',desc:`Scientific Name: Sphyrnidae\nHabitat: Warm coastal waters.\nAverage Size: 13 feet.\nDiet: Fish, rays, squid.\nFun Fact: Their wide heads improve sensory perception.`},
+      {id:6,name:'Manta Ray',habitat:'Open Ocean',img:'manta-ray.webp',shortDesc:'Graceful giant that filter feeds on plankton.',desc:`Scientific Name: Manta birostris\nHabitat: Tropical oceans.\nWingspan: Up to 23 feet.\nDiet: Plankton.\nFun Fact: Performs somersaults while feeding!`},
+      {id:7,name:'Sea Star',habitat:'Seafloor',img:'photo.jpeg',shortDesc:'Slow-moving echinoderm with five arms.',desc:`Scientific Name: Asteroidea\nHabitat: Ocean floor worldwide.\nDiet: Mollusks.\nFun Fact: Can regenerate lost arms.`},
+      {id:8,name:'Lionfish',habitat:'Coral Reef',img:'lionfish.jpg',shortDesc:'Beautiful but venomous reef fish.',desc:`Scientific Name: Pterois\nHabitat: Indo-Pacific reefs.\nDiet: Small fish and crustaceans.\nFun Fact: Invasive species in Atlantic.`},
+      {id:9,name:'Beluga Whale',habitat:'Arctic Ocean',img:'beluga-whale.avif',shortDesc:'White whale known for vocal sounds.',desc:`Scientific Name: Delphinapterus leucas\nHabitat: Arctic and sub-Arctic waters.\nSize: 13–20 feet.\nDiet: Fish, shrimp, worms.\nFun Fact: Called "sea canaries" for their songs.`},
+      {id:10,name:'Jellyfish',habitat:'Open Ocean',img:'jelly fish.jpeg',shortDesc:'Gelatinous creature with stinging tentacles.',desc:`Scientific Name: Scyphozoa\nHabitat: All oceans.\nDiet: Plankton and small fish.\nFun Fact: Have existed for over 500 million years.`},
+      {id:11,name:'Dolphin',habitat:'Open Ocean',img:'Dolphin-F.jpg',shortDesc:'Smart, playful marine mammal.',desc:`Scientific Name: Delphinidae\nHabitat: Tropical and temperate oceans.\nDiet: Fish and squid.\nFun Fact: Sleep with one eye open.`},
+      {id:12,name:'Seahorse',habitat:'Coral Reef',img:'seahorse.jpeg',shortDesc:'Tiny fish with horse-like heads.',desc:`Scientific Name: Hippocampus\nHabitat: Shallow coastal waters.\nDiet: Small crustaceans.\nFun Fact: Males carry the babies!`},
+      {id:13,name:'Whale Shark',habitat:'Open Ocean',img:'whale_shark.jpg',shortDesc:'Largest fish in the ocean.',desc:`Scientific Name: Rhincodon typus\nHabitat: Tropical oceans.\nDiet: Plankton.\nFun Fact: Can live up to 130 years!`},
+      {id:14,name:'Crab',habitat:'Seafloor',img:'crab.jpg',shortDesc:'Hard-shelled crustacean with claws.',desc:`Scientific Name: Brachyura\nHabitat: Coastal and deep waters.\nDiet: Algae, mollusks, detritus.\nFun Fact: Walk sideways to move faster.`},
+      {id:15,name:'Orca',habitat:'Open Ocean',img:'orca.jpg',shortDesc:'Black and white apex predator.',desc:`Scientific Name: Orcinus orca\nHabitat: Polar to tropical oceans.\nDiet: Fish, seals, whales.\nFun Fact: Also known as killer whale, but it’s a dolphin!`},
+      {id:16,name:'Sea Urchin',habitat:'Seafloor',img:'sea urchin.jpg',shortDesc:'Spiny creature found on reefs.',desc:`Scientific Name: Echinoidea\nHabitat: Shallow coastal seabeds.\nDiet: Algae.\nFun Fact: Play a key role in maintaining reef balance.`},
+      {id:17,name:'Moray Eel',habitat:'Coral Reef',img:'GiantMorayEel.jpeg',shortDesc:'Snake-like fish living in crevices.',desc:`Scientific Name: Muraenidae\nHabitat: Coral reefs and rocky areas.\nDiet: Fish, octopus, crustaceans.\nFun Fact: Has a second set of jaws inside its throat.`}
+    ];
+
+    const gallery = document.getElementById('galleryGrid');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalImg = document.getElementById('modalImg');
+    const closeModalBtn = document.getElementById('closeModal');
+    const closeModalBtn2 = document.getElementById('closeModalBtn'); // Button inside text
+
+    /**
+     * Renders the gallery of species.
+     */
+    function renderGallery(list) {
+      gallery.innerHTML = '';
+      list.forEach(s => {
+        const el = document.createElement('div');
+        el.className = 'card';
+        // Updated card HTML with habitat badge and better structure
+        el.innerHTML = `
+          <div class="species-img" style="background-image:url('${s.img}')">
+            <span class="habitat-badge">${s.habitat}</span>
+          </div>
+          <div class="card-content">
+            <h4>${s.name}</h4>
+            <p>${s.shortDesc}</p>
+            <button class="btn" data-id="${s.id}">View Details</button>
+          </div>`;
+        gallery.appendChild(el);
+      });
+    }
+
+    /**
+     * Parses the multi-line description string into formatted HTML.
+     * @param {string} descString - The raw description string with newlines.
+     * @returns {string} - Formatted HTML string.
+     */
+    function parseDescription(descString) {
+      return descString.split('\n').map(line => {
+        const parts = line.split(':');
+        if (parts.length < 2) return `<p>${line}</p>`; // Handle lines without a colon
+        
+        const key = parts[0];
+        const value = parts.slice(1).join(':').trim();
+        
+        return `<div class="detail-item">
+                  <strong>${key}:</strong>
+                  <span>${value}</span>
+                </div>`;
+      }).join('');
+    }
+
+    /**
+     * Opens the modal with the specified species details.
+     * @param {object} speciesData - The species object from the array.
+     */
+    function openModal(speciesData) {
+      modalTitle.textContent = speciesData.name;
+      // Use the new parser function
+      modalDesc.innerHTML = parseDescription(speciesData.desc);
+      modalImg.src = speciesData.img;
+      modalImg.alt = speciesData.name;
+      modal.classList.add('open');
+    }
+
+    /**
+     * Closes the modal.
+     */
+    function closeModal() {
+      modal.classList.remove('open');
+    }
+
+    // --- Event Listeners ---
+
+    // Render the initial gallery
+    renderGallery(species);
+
+    // Event delegation for gallery clicks
+    gallery.addEventListener('click', e => {
+      const btn = e.target.closest('button[data-id]');
+      if (!btn) return;
+
+      const speciesId = btn.dataset.id;
+      const selectedSpecies = species.find(x => x.id == speciesId);
+      
+      if (selectedSpecies) {
+        openModal(selectedSpecies);
+      }
+    });
+
+    // Close modal listeners
+    closeModalBtn.addEventListener('click', closeModal);
+    closeModalBtn2.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => {
+      // Close only if the background overlay itself is clicked
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+  </script>
+</body>
+</html>
