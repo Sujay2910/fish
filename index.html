@@ -3,169 +3,608 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Aquatic Life — Sea Life Explorer</title>
-  <meta name="description" content="Interactive Aquatic Life website — HTML/CSS/JS sample project for VS Code with animations and gallery." />
+  <title>Marine Life</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  
   <style>
-    :root{
-      --bg:#011627;
-      --sea:#013a63;
-      --accent:#00d4ff;
-      --soft:#7bdff6;
-      --card:#052f44;
-      --glass: rgba(255,255,255,0.06);
-      --glass-2: rgba(255,255,255,0.03);
-      --muted: rgba(255,255,255,0.6);
-      --max-width:1100px;
-      --radius:14px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    :root {
+      --bg: #011627;
+      --bg-light: #022f3b;
+      --accent: #00d4ff;
+      --accent-hover: #5bebff;
+      --muted: rgba(255, 255, 255, 0.7);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(0,80,120,0.12), transparent), var(--bg);
-      color:#e6fbff;
-      line-height:1.4;
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
     }
-    a{color:var(--accent);text-decoration:none}
-    .container{max-width:var(--max-width);margin:0 auto;padding:32px}
-    header{padding:18px 0}
-    .nav{display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#005f73);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.6)}
-    .logo svg{width:36px;height:36px}
-    .brand h1{font-size:18px;margin:0}
-    .brand p{margin:0;font-size:12px;color:var(--muted)}
-    nav ul{display:flex;gap:18px;list-style:none;padding:0;margin:0}
-    nav li{font-size:14px}
-    .controls{display:flex;gap:10px;align-items:center}
-    .btn{background:linear-gradient(90deg,#075985,#00b4d8);border:0;padding:8px 12px;border-radius:10px;cursor:pointer;color:#021826;font-weight:600}
-    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:10px}
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;padding:30px 0}
-    .hero-card{background:linear-gradient(180deg,var(--glass),transparent);border-radius:var(--radius);padding:24px;backdrop-filter: blur(6px);box-shadow:0 8px 30px rgba(2,8,23,0.7)}
-    .headline{font-size:28px;margin:0 0 8px}
-    .lead{color:var(--muted);margin:0 0 16px}
-    .search-row{display:flex;gap:10px}
-    .search{flex:1;padding:10px 12px;border-radius:10px;border:0;background:var(--glass-2);color:inherit}
-    .aquarium{position:relative;height:360px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#004b66 0%, #001a2b 70%);box-shadow:inset 0 0 120px rgba(0,0,0,0.6)}
-    .wave{position:absolute;left:-10%;right:-10%;height:120px;bottom:0;background:radial-gradient(circle at 50% 0%, rgba(255,255,255,0.02), transparent)}
-    .bubbles{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none}
-    .bubble{position:absolute;width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.06);animation:rise 8s infinite linear;filter:blur(0.4px)}
-    @keyframes rise{0%{transform:translateY(120%);opacity:0}10%{opacity:0.9}100%{transform:translateY(-60%);opacity:0}}
-    .fish{position:absolute;width:80px;height:36px;border-radius:60px 60px 20px 60px/50px;transform-origin:center;animation:swim var(--d,8s) linear infinite}
-    .fish .eye{position:absolute;right:12px;top:8px;width:7px;height:7px;border-radius:50%;background:#021826}
-    .fish .tail{position:absolute;left:-12px;top:6px;width:24px;height:24px;transform:rotate(30deg);clip-path:polygon(100% 0,0 50%,100% 100%);}
-    @keyframes swim{0%{transform:translateX(-20%) translateY(0)}50%{transform:translateX(120%) translateY(-8px)}100%{transform:translateX(-20%) translateY(0)}}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.03), transparent);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
-    .species-img{height:130px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#023e5b,#014055);color:var(--soft);font-weight:700;position:relative}
-    .tag{display:inline-block;padding:6px 8px;border-radius:999px;font-size:12px;background:rgba(0,0,0,0.2);color:var(--soft)}
-    .modal{position:fixed;inset:0;background:linear-gradient(180deg,rgba(1,22,34,0.6),rgba(1,8,12,0.9));display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .18s}
-    .modal.open{opacity:1;pointer-events:auto}
-    .modal-card{width:min(840px,96%);background:linear-gradient(180deg,#022f3b,#011a23);border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,0.04)}
-    footer{padding:28px 0;color:var(--muted);font-size:13px}
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-light);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+    
+    /* Keyframes for Load Animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      margin: 0;
+      color: white;
+      line-height: 1.5;
+
+      /* Background Image Setup */
+      background-image: url('BG1.webp'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-color: var(--bg); 
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 32px;
+
+      /* === INCREASED TRANSPARENCY (OPACITY 0.55) === */
+      background: rgba(1, 22, 39, 0.55); 
+      backdrop-filter: blur(5px);
+      border-radius: 14px;
+      margin-top: 32px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      
+      /* Load Animation */
+      animation: fadeIn 1s ease-out 0.2s backwards;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(45deg, var(--accent), #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0;
+    }
+
+    h3 {
+      margin-top: 40px;
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--card-bg);
+      padding-bottom: 10px;
+    }
+
+    /* NAV BAR STYLES */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 15px 40px;
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-brand {
+      color: #00cfff;
+      font-size: 1.6em;
+      font-weight: bold;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    .nav-brand i {
+      margin-right: 8px;
+      color: #00e0ff;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #f1f1f1;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #00e0ff;
+      transform: scale(1.1);
+    }
+
+    /* End NAV BAR STYLES */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      text-align: left;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      /* Enhanced Hover Animation */
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px); /* Deeper lift */
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    }
+
+    .species-img {
+      height: 130px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    
+    .habitat-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .card-content {
+      padding: 16px;
+    }
+    
+    .card-content h4 {
+      margin: 0 0 8px;
+    }
+
+    .card-content p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 0 12px;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+      border: none;
+      padding: 9px 14px;
+      border-radius: 8px;
+      margin-top: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      /* Animation: slight pop */
+      transition: background-color 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: scale(1.05); /* Increased scale for a 'pop' effect */
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+      padding: 16px;
+    }
+
+    .modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 24px;
+  /* === Change this line === */
+  background: rgba(2, 47, 59, 0.95); /* This is var(--bg-light) with 95% opacity */
+  
+  border-radius: 14px;
+  padding: 24px;
+  max-width: 900px;
+  width: 100%;
+  align-items: flex-start;
+  position: relative;
+  box-shadow: var(--shadow);
+  transform: scale(0.95);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+    .modal.open .modal-card {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .modal-card img {
+      flex-basis: 400px;
+      flex-shrink: 0;
+      width: 45%;
+      border-radius: 10px;
+      object-fit: cover;
+      height: 350px;
+    }
+
+    .modal-text {
+      flex: 1;
+      min-width: 0; /* Prevents flex overflow */
+    }
+
+    .modal-text h2 {
+      margin: 0 0 16px;
+      font-size: 2rem;
+      color: var(--accent);
+    }
+    
+    /* New modal description styling */
+    .detail-item {
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+    .detail-item strong {
+      display: block;
+      color: white;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .detail-item span {
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 2.5rem;
+      font-weight: 300;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      transition: color 0.2s ease;
+    }
+    .modal-close:hover {
+      color: white;
+    }
+    
+    /* Responsive adjustment for modal */
+    @media (max-width: 768px) {
+      .modal-card {
+        flex-direction: column;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-card img {
+        width: 100%;
+        height: 250px;
+        flex-basis: 250px;
+      }
+      .modal-text h2 {
+        font-size: 1.7rem;
+        margin-top: 10px;
+      }
+    }
+    
+    /* Footer Styles */
+    .footer {
+        background: rgba(1, 22, 39, 0.9); /* Dark background with high opacity */
+        border-top: 1px solid var(--card-bg);
+        padding: 40px 0 20px 0;
+        margin-top: 40px;
+        color: var(--muted);
+    }
+    
+    .footer-content {
+        max-width: 1100px;
+        margin: auto;
+        padding: 0 32px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 30px;
+    }
+    
+    .footer-section {
+        flex: 1;
+        min-width: 180px;
+    }
+    
+    .footer-section h4 {
+        color: white;
+        font-size: 1.1rem;
+        margin-top: 0;
+        margin-bottom: 15px;
+        border-bottom: 2px solid var(--accent);
+        display: inline-block;
+        padding-bottom: 5px;
+    }
+    
+    .footer-section p {
+        font-size: 0.9rem;
+        margin: 0 0 10px 0;
+    }
+
+    .footer-section a {
+        color: var(--muted);
+        text-decoration: none;
+        display: block;
+        margin-bottom: 8px;
+        transition: color 0.2s ease;
+    }
+    
+    .footer-section a:hover {
+        color: var(--accent);
+    }
+
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .social-links a {
+        display: block;
+        font-size: 1.4rem;
+        color: white;
+        transition: color 0.2s ease, transform 0.2s ease;
+        /* Remove inherited 'display: block' from footer-section a */
+        margin-bottom: 0; 
+    }
+
+    .social-links a:hover {
+        color: var(--accent-hover);
+        transform: scale(1.1);
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.85rem;
+    }
+    
+    @media (max-width: 768px) {
+        .footer-content {
+            justify-content: center;
+            text-align: center;
+        }
+        .footer-section h4 {
+            border-bottom: none;
+        }
+        .social-links {
+            justify-content: center;
+        }
+    }
+    
   </style>
 </head>
 <body>
+  <nav class="navbar">
+      <a href="#" class="nav-brand">
+        <i class="fa-solid fa-water"></i> 
+        Marine Life
+      </a>
+      <ul class="nav-links">
+  <li><a href="index.html"><i class="fa-solid fa-image"></i> <span>Gallery</span></a></li>
+  <li><a href="about.html" id="aboutLink"><i class="fa-solid fa-circle-info"></i> <span>About</span></a></li>
+  <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> <span>Contact</span></a></li>
+  
+</ul>
+    </nav>
   <div class="container">
-    <header>
-      <div class="nav">
-        <div class="brand">
-          <div class="logo">
-            <svg viewBox="0 0 64 64" fill="none"><path d="M12 32c10-12 28-12 40 0-12 12-28 12-40 0z" fill="#00e0ff" opacity="0.9"/><circle cx="38" cy="26" r="3" fill="#001f2e"/></svg>
-          </div>
-          <div>
-            <h1>Aquatic Life Explorer</h1>
-            <p>Learn — Explore — Protect</p>
-          </div>
-        </div>
-        <nav>
-          <ul>
-            <li><a href="#gallery">Species</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-
+    
+    
+    
     <main>
-      <section class="hero">
-        <div class="hero-card">
-          <h2 class="headline">Dive into Sea Life — Interactive Aquarium & Species Gallery</h2>
-          <p class="lead">Explore species cards, view details, filter by habitat and watch animated fish swim across the aquarium.</p>
-          <div class="search-row">
-            <input id="searchInput" class="search" placeholder="Search species (e.g. Clownfish, Octopus, Shark)..." />
-            <button class="btn" id="searchBtn">Search</button>
-          </div>
-        </div>
-        <div>
-          <div class="aquarium" id="aquarium">
-            <div class="bubbles" id="bubbles"></div>
-            <div class="wave"></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="gallery" class="section">
-        <h3>Species Gallery</h3>
-        <div class="grid" id="galleryGrid"></div>
-      </section>
+      <h3>Species Gallery</h3>
+      <div class="grid" id="galleryGrid"></div>
     </main>
-
-    <footer>Built with ❤️ — Sample project for VS Code</footer>
   </div>
+  
+  <footer class="footer">
+    <div class="footer-content">
+        
+        <div class="footer-section">
+            <h4>About Us</h4>
+            <p>Dedicated to exploring and cataloging the amazing diversity of life found beneath the ocean waves.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <a href="#">Species Index</a>
+            <a href="#">Habitat Maps</a>
+            <a href="#">Conservation Efforts</a>
+            <a href="#">Submit a Photo</a>
+        </div>
+
+        <div class="footer-section">
+            <h4>Support</h4>
+            <a href="#">FAQ</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Donations</a>
+        </div>
+        
+    </div>
+    <div class="footer-bottom">
+        &copy; <span id="current-year"></span> Marine life. All rights reserved.
+    </div>
+  </footer>
 
   <div class="modal" id="modal">
     <div class="modal-card">
-      <h2 id="modalTitle"></h2>
-      <p id="modalDesc" style="color:var(--muted)"></p>
-      <div id="modalImage" style="margin-top:10px;width:100%;height:200px;border-radius:10px;background:linear-gradient(180deg,#014b66,#023e5b);display:flex;align-items:center;justify-content:center;font-weight:700">Image</div>
-      <button class="btn" id="closeModal" style="margin-top:16px">Close</button>
+      <button class="modal-close" id="closeModal" aria-label="Close modal">&times;</button>
+      <img id="modalImg" src="" alt="">
+      <div class="modal-text">
+        <h2 id="modalTitle"></h2>
+        <div id="modalDesc"></div>
+        <button class="btn" id="closeModalBtn" style="margin-top: 16px;">Close</button>
+      </div>
     </div>
   </div>
 
   <script>
-    const species = [
-      { id:1, name:'Clownfish', habitat:'Coral Reef', img:'clownfish.avif', shortDesc:'Colorful reef fish that lives with sea anemones.', desc:`**Scientific Name:** Amphiprioninae  \n**Habitat:** Coral reefs in the Pacific and Indian Oceans.  \n**Average Size:** 4–5 inches (10–13 cm).  \n**Diet:** Small invertebrates, algae, and leftover food from sea anemones.  \n**Behavior:** Lives in symbiosis with anemones — protected by their tentacles while cleaning them.  \n**Fun Fact:** All clownfish are born male; the dominant one changes into a female!` },
-      { id:2, name:'Blue Tang', habitat:'Coral Reef', img:'blue-fish.jpg', shortDesc:'Bright blue reef fish known from Finding Nemo.', desc:`**Scientific Name:** Paracanthurus hepatus  \n**Habitat:** Coral reefs of the Indo-Pacific region.  \n**Average Size:** 12 inches (30 cm).  \n**Diet:** Algae and plankton.  \n**Behavior:** Known for cleaning algae off coral; swims in groups.  \n**Fun Fact:** The Blue Tang can change color from bright blue to dark purple when stressed.` },
-      { id:3, name:'Giant Octopus', habitat:'Seafloor', img:'octopus+2.webp', shortDesc:'Intelligent cephalopod with three hearts.', desc:`**Scientific Name:** Enteroctopus dofleini  \n**Habitat:** Cold ocean floors, especially in the North Pacific.  \n**Average Size:** Up to 16 feet arm span!  \n**Diet:** Crabs, lobsters, fish, and clams.  \n**Behavior:** Masters of camouflage and problem-solving.  \n**Fun Fact:** It has three hearts and blue blood!` },
-    ];
+    // Set the current year in the footer dynamically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    const species=[
+  {id:1,name:'Clownfish',habitat:'Coral Reef',img:'clownfish.avif',shortDesc:'Colorful reef fish that lives with sea anemones.',desc:`Scientific Name: Amphiprioninae\nHabitat: Coral reefs in the Pacific and Indian Oceans.\nAverage Size: 4–5 inches.\nDiet: Small invertebrates, algae.\nFun Fact: All clownfish are born male; dominant one changes into a female!`},
+  {id:2,name:'Blue Tang',habitat:'Coral Reef',img:'blue-fish.jpg',shortDesc:'Bright blue reef fish known from Finding Nemo.',desc:`Scientific Name: Paracanthurus hepatus\nHabitat: Indo-Pacific coral reefs.\nAverage Size: 12 inches.\nDiet: Algae and plankton.\nFun Fact: Changes color from blue to purple when stressed.`},
+  {id:3,name:'Giant Octopus',habitat:'Seafloor',img:'octopus+2.webp',shortDesc:'Intelligent cephalopod with three hearts.',desc:`Scientific Name: Enteroctopus dofleini\nHabitat: Cold ocean floors.\nAverage Size: Up to 16 feet arm span.\nDiet: Crabs, lobsters, fish.\nFun Fact: Has blue blood!`},
+  {id:4,name:'Sea Turtle',habitat:'Open Ocean',img:'turtle1.webp',shortDesc:'Marine reptile that migrates long distances.',desc:`Scientific Name: Chelonioidea\nHabitat: Tropical and subtropical seas.\nAverage Lifespan: 80 years.\nDiet: Seagrass and jellyfish.\nFun Fact: Females return to same beach where they hatched.`},
+  {id:5,name:'Hammerhead Shark',habitat:'Open Ocean',img:'hammerhead-shark-swimming_3x2.avif',shortDesc:'Predator with unique head shape.',desc:`Scientific Name: Sphyrnidae\nHabitat: Warm coastal waters.\nAverage Size: 13 feet.\nDiet: Fish, rays, squid.\nFun Fact: Their wide heads improve sensory perception.`},
+  {id:6,name:'Manta Ray',habitat:'Open Ocean',img:'manta-ray.webp',shortDesc:'Graceful giant that filter feeds on plankton.',desc:`Scientific Name: Manta birostris\nHabitat: Tropical oceans.\nWingspan: Up to 23 feet.\nDiet: Plankton.\nFun Fact: Performs somersaults while feeding!`},
+  {id:7,name:'Sea Star',habitat:'Seafloor',img:'photo.jpeg',shortDesc:'Slow-moving echinoderm with five arms.',desc:`Scientific Name: Asteroidea\nHabitat: Ocean floor worldwide.\nDiet: Mollusks.\nFun Fact: Can regenerate lost arms.`},
+  {id:8,name:'Lionfish',habitat:'Coral Reef',img:'lionfish.jpg',shortDesc:'Beautiful but venomous reef fish.',desc:`Scientific Name: Pterois\nHabitat: Indo-Pacific reefs.\nDiet: Small fish and crustaceans.\nFun Fact: Invasive species in Atlantic.`},
+  {id:9,name:'Beluga Whale',habitat:'Arctic Ocean',img:'beluga-whale.avif',shortDesc:'White whale known for vocal sounds.',desc:`Scientific Name: Delphinapterus leucas\nHabitat: Arctic and sub-Arctic waters.\nSize: 13–20 feet.\nDiet: Fish, shrimp, worms.\nFun Fact: Called "sea canaries" for their songs.`},
+  {id:10,name:'Jellyfish',habitat:'Open Ocean',img:'jelly fish.jpeg',shortDesc:'Gelatinous creature with stinging tentacles.',desc:`Scientific Name: Scyphozoa\nHabitat: All oceans.\nDiet: Plankton and small fish.\nFun Fact: Have existed for over 500 million years.`},
+  {id:11,name:'Dolphin',habitat:'Open Ocean',img:'Dolphin-F.jpg',shortDesc:'Smart, playful marine mammal.',desc:`Scientific Name: Delphinidae\nHabitat: Tropical and temperate oceans.\nDiet: Fish and squid.\nFun Fact: Sleep with one eye open.`},
+  {id:12,name:'Seahorse',habitat:'Coral Reef',img:'seahorse.jpeg',shortDesc:'Tiny fish with horse-like heads.',desc:`Scientific Name: Hippocampus\nHabitat: Shallow coastal waters.\nDiet: Small crustaceans.\nFun Fact: Males carry the babies!`},
+  {id:13,name:'Whale Shark',habitat:'Open Ocean',img:'whale_shark.jpg',shortDesc:'Largest fish in the ocean.',desc:`Scientific Name: Rhincodon typus\nHabitat: Tropical oceans.\nDiet: Plankton.\nFun Fact: Can live up to 130 years!`},
+  {id:14,name:'Crab',habitat:'Seafloor',img:'crab.jpg',shortDesc:'Hard-shelled crustacean with claws.',desc:`Scientific Name: Brachyura\nHabitat: Coastal and deep waters.\nDiet: Algae, mollusks, detritus.\nFun Fact: Walk sideways to move faster.`},
+  {id:15,name:'Orca',habitat:'Open Ocean',img:'orca.jpg',shortDesc:'Black and white apex predator.',desc:`Scientific Name: Orcinus orca\nHabitat: Polar to tropical oceans.\nDiet: Fish, seals, whales.\nFun Fact: Also known as killer whale, but it’s a dolphin!`},
+  {id:16,name:'Sea Urchin',habitat:'Seafloor',img:'sea urchin.jpg',shortDesc:'Spiny creature found on reefs.',desc:`Scientific Name: Echinoidea\nHabitat: Shallow coastal seabeds.\nDiet: Algae.\nFun Fact: Play a key role in maintaining reef balance.`},
+  {id:17,name:'Moray Eel',habitat:'Coral Reef',img:'GiantMorayEel.jpeg',shortDesc:'Snake-like fish living in crevices.',desc:`Scientific Name: Muraenidae\nHabitat: Coral reefs and rocky areas.\nDiet: Fish, octopus, crustaceans.\nFun Fact: Has a second set of jaws inside its throat.`},
+  {id:18,name:'Emperor Penguin',habitat:'Antarctic Waters',img:'emperor-penguin.avif',shortDesc:'Largest penguin species that thrives in icy seas.',desc:`Scientific Name: Aptenodytes forsteri\nHabitat: Antarctica and surrounding oceans.\nAverage Height: 1.2 meters.\nDiet: Fish, krill, and squid.\nFun Fact: Males incubate eggs during the harsh Antarctic winter while females hunt.`},
+  {id:19,name:'Cuttlefish',habitat:'Coastal Waters',img:'cuttlefish.jpeg',shortDesc:'Camouflage master of the ocean.',desc:`Scientific Name: Sepiida\nHabitat: Shallow tropical and temperate waters.\nDiet: Small fish, crabs, and shrimp.\nFun Fact: Can instantly change color and texture to blend with surroundings.`},
+  {id:20,name:'Giant Squid',habitat:'Deep Ocean',img:'giant_squid.jpg',shortDesc:'Elusive deep-sea giant with enormous tentacles.',desc:`Scientific Name: Architeuthis dux\nHabitat: Deep ocean waters worldwide.\nLength: Up to 43 feet.\nDiet: Fish and smaller squid.\nFun Fact: Rarely seen alive; most knowledge comes from specimens washed ashore.`}
+];
 
-    const gallery=document.getElementById('galleryGrid');
-    function renderGallery(list){
-      gallery.innerHTML='';
-      list.forEach(s=>{
-        const el=document.createElement('div');
-        el.className='card';
-        el.innerHTML=`
-        <div class="species-img" style="background-image:url('${s.img}');background-size:cover;background-position:center;">
-          <div style="position:absolute;bottom:8px;right:8px;font-size:12px;background:rgba(0,0,0,0.4);padding:2px 6px;border-radius:6px;">${s.habitat}</div>
-        </div>
-        <h4 style="margin:10px 0 6px">${s.name}</h4>
-        <div style="color:var(--muted);font-size:13px">${s.shortDesc}</div>
-        <button class="btn" data-id="${s.id}">View</button>`;
+
+    const gallery = document.getElementById('galleryGrid');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalImg = document.getElementById('modalImg');
+    const closeModalBtn = document.getElementById('closeModal');
+    const closeModalBtn2 = document.getElementById('closeModalBtn');
+
+    /**
+     * Renders the gallery of species.
+     */
+    function renderGallery(list) {
+      gallery.innerHTML = '';
+      list.forEach(s => {
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.innerHTML = `
+          <div class="species-img" style="background-image:url('${s.img}')">
+            <span class="habitat-badge">${s.habitat}</span>
+          </div>
+          <div class="card-content">
+            <h4>${s.name}</h4>
+            <p>${s.shortDesc}</p>
+            <button class="btn" data-id="${s.id}">View Details</button>
+          </div>`;
         gallery.appendChild(el);
       });
     }
+
+    /**
+     * Parses the multi-line description string into formatted HTML.
+     */
+    function parseDescription(descString) {
+      return descString.split('\n').map(line => {
+        const parts = line.split(':');
+        if (parts.length < 2) return `<p>${line}</p>`;
+        
+        const key = parts[0];
+        const value = parts.slice(1).join(':').trim();
+        
+        return `<div class="detail-item">
+                  <strong>${key}:</strong>
+                  <span>${value}</span>
+                </div>`;
+      }).join('');
+    }
+
+    /**
+     * Opens the modal with the specified species details.
+     */
+    function openModal(speciesData) {
+      modalTitle.textContent = speciesData.name;
+      modalDesc.innerHTML = parseDescription(speciesData.desc);
+      modalImg.src = speciesData.img;
+      modalImg.alt = speciesData.name;
+      modal.classList.add('open');
+    }
+
+    /**
+     * Closes the modal.
+     */
+    function closeModal() {
+      modal.classList.remove('open');
+    }
+
+    // --- Event Listeners ---
     renderGallery(species);
 
-    const modal=document.getElementById('modal');
-    const modalTitle=document.getElementById('modalTitle');
-    const modalDesc=document.getElementById('modalDesc');
-    const modalImage=document.getElementById('modalImage');
-    gallery.addEventListener('click',e=>{
-      const btn=e.target.closest('button[data-id]');
-      if(!btn)return;
-      const id=+btn.dataset.id;
-      const s=species.find(x=>x.id===id);
-      modalTitle.textContent=s.name;
-      modalDesc.innerHTML=s.desc.replaceAll('\n','<br>');
-      modalImage.innerHTML=`<img src="${s.img}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">`;
-      modal.classList.add('open');
+    gallery.addEventListener('click', e => {
+      const btn = e.target.closest('button[data-id]');
+      if (!btn) return;
+
+      const speciesId = btn.dataset.id;
+      const selectedSpecies = species.find(x => x.id == speciesId);
+      
+      if (selectedSpecies) {
+        openModal(selectedSpecies);
+      }
     });
-    document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('open'));
-    modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+
+    closeModalBtn.addEventListener('click', closeModal);
+    closeModalBtn2.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
   </script>
 </body>
 </html>
